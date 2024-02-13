@@ -50,6 +50,8 @@ Spin-down database container:
 
 `npm run dbdown`
 
+If in need of an additional tool you can uncomment adminer in the docker-compose.yaml and use it to explore the Docker database.
+
 ## Setting up environmental variables for another database source
 
 If using the local Docker database you do not need to do anything extra, as the connection info is contained in the `.env.defaults` file. If you are using another source, create a `.env` file and over-ride the defaults as needed (use `.env.defaults` as your guide).
@@ -57,7 +59,7 @@ If using the local Docker database you do not need to do anything extra, as the 
 
 ## Tips for setting up your database from another source
 
-If you want to setup your database in another way, see `./db/dump.sql` for assistance on making the correct tables within your database.
+If you want to setup up your own database use `./db/dump.sql` for assistance on making the correct tables within your database.
 
 I have used a free tier of ElephantSQL for deployment. If you also choose to use this service here are some tips on getting the correct data:
 

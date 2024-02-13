@@ -5,7 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev":"npx nodemon ./src/index.ts"
+    "dev": "npx nodemon ./src/index.ts",
+    "dbup": "docker compose up -d",
+    "dbdown": "docker compose down -v"
   },
   "keywords": [],
   "author": "Joseph Alton",

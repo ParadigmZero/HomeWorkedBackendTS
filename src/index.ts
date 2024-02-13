@@ -5,16 +5,21 @@ const port : number = 7012;
 const app : Express = express();
 require('dotenv').config();
 
+
+// REDO  as client
+
 // PostgreSQL database:
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    host: process.env.HOST,
-    user: process.env.USER,
-    database: process.env.DATABASE,
-    password: process.env.PASSWORD,
-    port: process.env.PORT
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    database: process.env.DB_DATABASE,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT
   });
+
+console.log(process.env);
 
 
 // Middleware
@@ -80,6 +85,15 @@ app.get("/test", async (req: Request, res: Response)=>{
 });
 
 // Delete single homework, and childrens homework
+app.delete("/:id", async (req: Request, res: Response)=>{
+    await pool.execute(`DELETE FROM childrensHomework WHERE homeworkid=$1;`,
+    [req.params.id]);
+
+    await pool.execute(`DELETE FROM homework WHERE id=$1;`,
+    [req.params.id]);
+});
+
+
 app.listen(port, ()=>{
     console.log(`Listening on port ${port}`)
 });

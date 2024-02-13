@@ -1,11 +1,11 @@
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-const port: number = 7012;
-const app: Express = express();
 import "dotenv-defaults/config";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
+const port: number = Number(process.env.PORT);
+const app: Express = express();
 
 // used for settings for Swagger
 const options = {
@@ -90,7 +90,7 @@ app.get("/:id", async (req: Request, res: Response) => {
 
   console.log(aux);
 
-  res.send(aux.rows);
+  res.status(200).send(aux.rows);
 });
 
 /**
@@ -98,12 +98,30 @@ app.get("/:id", async (req: Request, res: Response) => {
  * /:
  *     post:
  *       description: Add homework to database. Will populate empty children's entries also. Will return the homework.
+ *       requestBody:
+ *        content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               image:
+ *                 type: string
+ *               dateDue:
+ *                type: string
+ *               comment:
+ *                type: string
+ *             example:
+ *               name: test
+ *               image: test
+ *               dateDue: test
+ *               comment: test
  *       responses:
- *          200:
+ *          201:
  *              description: Success - homework entry created and empty children's homework entries setup
  */
 app.post("/", async (req: Request, res: Response) => {
-  // req.body is that right?
   let homework = await pool.query(
     `INSERT INTO homework (Name, Image, Datedue, Comment) VALUES ($1,$2,$3,$4) RETURNING *;`,
     [req.body.name, req.body.image, req.body.dateDue, req.body.comment]
@@ -120,7 +138,9 @@ app.post("/", async (req: Request, res: Response) => {
     );
   }
 
-  res.send(homework);
+  homework = homework.rows[0];
+
+  res.status(201).send(homework);
 });
 
 /**
@@ -146,7 +166,7 @@ app.put("/:homeworkId/:childId", async (req: Request, res: Response) => {
     ]
   );
 
-  res.send(child);
+  res.status(200).send(child);
 });
 
 /**
@@ -162,15 +182,18 @@ app.put("/:homeworkId/:childId", async (req: Request, res: Response) => {
  *          type: integer
  *         required: true
 *       responses:
- *          200:
- *              description: Success - TODO
+ *          204:
+ *              description: Deletion successful
  */
 app.delete("/:id", async (req: Request, res: Response) => {
-  await pool.execute(`DELETE FROM childrensHomework WHERE homeworkid=$1;`, [
+
+  await pool.query(`DELETE FROM childrensHomework WHERE homeworkid=$1;`, [
     req.params.id,
   ]);
 
-  await pool.execute(`DELETE FROM homework WHERE id=$1;`, [req.params.id]);
+  await pool.query(`DELETE FROM homework WHERE id=$1;`, [req.params.id]);
+
+  res.sendStatus(204);
 });
 
 app.listen(port, () => {

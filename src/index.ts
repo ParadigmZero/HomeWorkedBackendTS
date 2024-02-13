@@ -1,9 +1,29 @@
 import express, {Express, Request, Response} from "express";
-const cors = require('cors');
-const bodyParser = require('body-parser')
+import cors from "cors";
+import bodyParser from "body-parser";
 const port : number = 7012;
 const app : Express = express();
 import "dotenv-defaults/config";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+
+
+
+// used for settings for Swagger
+const options = {
+    failOnErrors: true,
+    definition: {
+      openapi: "3.0.0",
+      info: {
+        title: "Webpage word counter API",
+        version: process.env.npm_package_version as string,
+      },
+    },
+    apis: ['./src/index.ts']
+  };
+  
+const openapiSpecification = swaggerJsDoc(options);
+
 
 
 // REDO  as client
@@ -25,7 +45,19 @@ app.use(cors());
 // parse JSON in request bodies
 app.use(bodyParser.json());
 
-// Get ALL Homework
+app.use("/api", swaggerUI.serve, swaggerUI.setup(openapiSpecification));
+
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Get all homework
+ *     summary: Get all homework
+ *     responses:
+ *       200:
+ *         description: Success - got all homework
+ *
+ */
 app.get("/", async (req: Request, res: Response)=>{
     var aux = await pool.query('SELECT * FROM Homework;');
     res.send(aux.rows);

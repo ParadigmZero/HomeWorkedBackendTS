@@ -26,6 +26,16 @@ or for development (watches code changes with Nodemon):
 
 `npm run dev`
 
+By default it will accessible at:
+
+<http://localhost:7012>
+
+# API docs/testing
+
+API docs will be at:
+
+`<HOST>/api`
+
 # Database info
 
 ## Local Docker database setup

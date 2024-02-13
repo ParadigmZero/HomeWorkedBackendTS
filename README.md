@@ -28,18 +28,6 @@ or for development (watches code changes with Nodemon):
 
 # Database info
 
-## Setting up environmental variables for database
-
-Create your own `.env` file in this directory with details for your Postgresql instance. The below example will work for the local Docker method:
-
-```
-DB_HOST=localhost
-DB_USER=user
-DB_DATABASE=database
-DB_PASSWORD=password
-DB_PORT=5432
-```
-
 ## Local Docker database setup
 
 A local PostgreSQL database and sample data can be spun up with Docker. You will need Docker installed.
@@ -52,11 +40,17 @@ Spin-down database container:
 
 `npm run dbdown`
 
+## Setting up environmental variables for another database source
+
+If using the local Docker database you do not need to do anything extra, as the connection info is contained in the `.env.defaults` file. If you are using another source, create a `.env` file and over-ride the defaults as needed (use `.env.defaults` as your guide).
+
+
 ## Tips for setting up your database from another source
 
 If you want to setup your database in another way, see `./db/dump.sql` for assistance on making the correct tables within your database.
 
 I have used a free tier of ElephantSQL for deployment. If you also choose to use this service here are some tips on getting the correct data:
+
 HOST=<server url>
 DATABASE=<default database, same value as user>
 PORT=5432

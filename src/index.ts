@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser')
 const port : number = 7012;
 const app : Express = express();
-require('dotenv').config();
+import "dotenv-defaults/config";
 
 
 // REDO  as client
@@ -18,9 +18,6 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT
   });
-
-console.log(process.env);
-
 
 // Middleware
 // allow requests from same origin ( e.g. localhost)

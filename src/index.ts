@@ -22,7 +22,7 @@ const options = {
 
 const openapiSpecification = swaggerJsDoc(options);
 
-// REDO  as client
+// Consider redo PostgreSQL as client
 
 // PostgreSQL database:
 const { Pool } = require("pg");
@@ -68,6 +68,7 @@ app.get("/", async (req: Request, res: Response) => {
  *         name: id
  *         schema:
  *          type: integer
+ *         example: 1
  *         required: true
  *       responses:
  *          200:
@@ -113,10 +114,10 @@ app.get("/:id", async (req: Request, res: Response) => {
  *               comment:
  *                type: string
  *             example:
- *               name: test
- *               image: test
- *               dateDue: test
- *               comment: test
+ *               name: test name
+ *               image: test homework image
+ *               dateDue: test date due
+ *               comment: test comment
  *       responses:
  *          201:
  *              description: Success - homework entry created and empty children's homework entries setup
@@ -148,6 +149,37 @@ app.post("/", async (req: Request, res: Response) => {
  * /{homeworkId}/{childId}:
  *     put:
  *       description: Update a child's homework, and return the updated value
+ *       parameters:
+ *       - in: path
+ *         description: id for the piece of homework
+ *         name: homeworkId
+ *         schema:
+ *          type: integer
+ *         required: true
+ *         example: 1
+ *       - in: path
+ *         description: id for the piece of child's homework
+ *         name: childId
+ *         schema:
+ *          type: integer
+ *         example: 1
+ *         required: true
+ *       requestBody:
+ *        content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                type: string
+ *               comment:
+ *                type: string
+ *               annotation:
+ *                type: string
+ *             example:
+ *               image: test homework image
+ *               comment: test comment
+ *               annotation: test annotation
  *       responses:
  *          200:
  *              description: Success - TODO
@@ -160,13 +192,13 @@ app.put("/:homeworkId/:childId", async (req: Request, res: Response) => {
     [
       req.body.image,
       req.body.comment,
-      req.body.comment,
+      req.body.annotation,
       req.params.homeworkId,
       req.params.childId,
     ]
   );
 
-  res.status(200).send(child);
+  res.status(200).send(child.rows[0]);
 });
 
 /**

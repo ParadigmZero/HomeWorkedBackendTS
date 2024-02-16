@@ -5,6 +5,10 @@ This is a re-working of the original C# .NET Core project, it is designed to do 
 
 Plus some added quality of life features for developers.
 
+
+S3 bucket and object setup info here:
+<https://github.com/ParadigmZero/homeworked-terraform-iac>
+
 # Setup
 
 Node/npm must be installed first.

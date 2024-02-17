@@ -1,5 +1,7 @@
 Backend (NodeJS with TypeScript) to the HomeWorked, frontend found here: <https://github.com/ParadigmZero/HomeWorkedFrontend>
 
+In progress.
+
 This is a re-working of the original C# .NET Core project, it is designed to do exactly the same thing:
 <https://github.com/ParadigmZero/HomeWorkedBackend>
 
